@@ -18,7 +18,6 @@ def prepair_data(file):
     df = df.set_index(['Код'])
     df[['Имя', 'Производитель']] = df['Наименование товаров'].str.split('пр'
                                                 'оизв. ', expand = True)
-    df = df.drop('Наименование товаров', axis = 1)
     df['Имя'] = df['Имя'].str.replace('–' , '-')
     df[['Исполнитель', 'Название']] = df['Имя'].str.split( '-', 1, 
                                                           expand = True)
@@ -27,15 +26,11 @@ def prepair_data(file):
                    for r in df['Тех. данные'].values]
     df[['Тех. данные', 'Жанр']] = df['Тех. данные'].str.split(r'; \d\d.{2};', 
                                                               expand = True)
-    df = df.drop('Имя', axis = 1)
     df = df[df['Кол-во'] > 0].fillna('_')
-    df = df[df['Кол-во'].notna()]
     df['Кол-во'] = pd.to_numeric(df['Кол-во'], downcast = 'integer')
-    df['Производитель'][df['Производитель'] == 'Geramny'] = 'Germany' 
-    df['Производитель'][df['Производитель'] == 'Poptugal'] = 'Portugal' 
-    df['Год'][df['Год'] == '2083'] = '2003'
-    df['Жанр'][df['Жанр'].str.contains('Electromic')]  = df.loc[36252]['Жанр'
-                                       ''].replace('Electromic', 'Electronic')
+    df = df.replace(['Geramny', 'Poptugal', '2083', 'Electromic'],
+                    ['Germany', 'Portugal', '2003', 'Electronic'], 
+                    regex = True)
     df = df[df['Примечание'] != 'пакет для пластинок']
-    df = df.drop('Ваш заказ', axis = 1)
-    return df
+    df = df.drop(['Ваш заказ', 'Имя', 'Наименование товаров'], axis = 1)
+    return df.set_index(['Код'])
