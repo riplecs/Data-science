@@ -14,9 +14,10 @@ import re
 df = prepair_data('Винил 03.06.22.xls')
 
 years = list(np.unique(df['Год']))
-years.remove('19??')
-years.remove('20??')
-years.remove('-')
+
+for rep in ('19??', '20??', '-'):
+    if rep in years:
+        years.remove(rep)
 
 ganres = []
 for i in np.unique(df['Жанр']):
