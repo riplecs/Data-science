@@ -34,7 +34,8 @@ def prepair_data(file):
     df['Производитель'][df['Производитель'] == 'Geramny'] = 'Germany' 
     df['Производитель'][df['Производитель'] == 'Poptugal'] = 'Portugal' 
     df['Год'][df['Год'] == '2083'] = '2003'
-    df['Жанр'][df['Жанр'] == 'Electromic'] = 'Electronic'
+    df['Жанр'][df['Жанр'].str.contains('Electromic')]  = df.loc[36252]['Жанр'
+                                       ''].replace('Electromic', 'Electronic')
     df = df[df['Примечание'] != 'пакет для пластинок']
     df = df.drop('Ваш заказ', axis = 1)
     return df
