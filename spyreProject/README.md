@@ -1,0 +1,1 @@
+This is a web application for easy search of the vinyl records store database. This database is available for every offline visiter of shop in .xls format. The app also displays some statistical informations per different categories and limitations via plots. 
